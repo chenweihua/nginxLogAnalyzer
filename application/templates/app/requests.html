@@ -1,0 +1,13 @@
+<table id="t01", ng-show="show">
+
+    <tr>
+        <th>vrijeme</th>
+        <th>requests</th>
+    </tr>
+    <tr>
+{% for x in lista_za_ispis_requests %}
+        <td>{{ x.vrijeme }}</td>
+        <td>{{ x.requests }}</td>
+    </tr>
+{% endfor %}
+</table>

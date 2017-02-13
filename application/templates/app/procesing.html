@@ -1,0 +1,129 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>N & A</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
+    <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+    <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+  </head>
+  <body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+          <form action="/index"><input type="submit" value="Home" /></form>       
+          
+          <h4>Log analyzer</h4>
+          <p>This is log analyzer for nginx access log, simply you can upload your access log, and press scanner button, wait some time, and your stastistics is done, then you can look your nginx graph or you can take look to parsed tables, also you can download your nginx search tables if you want to have your stastistics locally!</p>
+          <script type="text/javascript">
+            var ray={
+            ajax:function(st)
+            {
+            this.show('load');
+            },
+            show:function(el)
+            {
+            this.getID(el).style.display='';
+            },
+            getID:function(el)
+            {
+            return document.getElementById(el);
+            }
+            }
+          </script>
+
+          <div id="load" style="display:none;">parser is activated, please wait</div>
+          <div id="loads" style="text-align: center">
+            <h4>Log analyzer</h4>
+            <p>Press start button to run N & A log analyzer.</p>
+            <form method="POST" action=""  method="post" onsubmit="return ray.ajax()">
+            {% csrf_token %}
+            {{ form }}
+            <p><input type="submit" name="mybtn" value="Start"/></p>
+            </form>
+
+            <p>You can download your log analyzer data.</p>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="download1" value="Download content/minute" /></p>
+            </form>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="download2" value="Download ip/minute" /></p>
+            </form>
+
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="download3" value="Download request/minute" /></p>
+            </form>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="download4" value="Download traffic/minute" /></p>
+            </form>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="download5" value="Download status/minute" /></p>
+            </form>
+          </div>
+        </article>
+      </div>
+    </div>
+    <!-- BG -->
+    <div id="bg"></div>
+    <!-- Scripts -->
+    <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

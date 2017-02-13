@@ -1,0 +1,66 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>N & A</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
+        <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+        <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+
+    </head>
+    <body>
+        <!-- Wrapper -->
+        <div id="wrapper">
+ 
+            <!-- Main -->
+            <div id="main">
+                <article id="intro" class="active" style="display: block;">
+                    <form action="/index"><input type="submit" value="Home" /></form>
+                    <h2 class="major">Upload</h2>
+                    <p>Upload your access.log (.zip, .gz, .tar.gz ), it is possible to upload more than one log, and your log will be extract automatically.</br>    
+                    For quickly parsing yours logs, application uses multithreading mode.
+                    N & A analysis software  is a kind of web analytics software that parses a server log file from a web server, and based on the values contained in the log file, derives indicators about when, how, and by whom a web server is visited. Reports are  generated immediately, but data extracted from the log files is stored in a postgres database, allowing various reports to be generated on demand.</p> 
+
+                    <form action="{% url "upload" %}" method="post" enctype="multipart/form-data"  >
+                        {% csrf_token %}
+                        <p>{{ form.non_field_errors }}</p>
+                        <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+                        <p>
+                        {{ form.docfile.errors }}
+                        {{ form.docfile }}
+                        </p>
+                        <p><input type="submit" value="Upload"/></p>
+                    </form>
+                    <h3>Your uploads logs:</h3>
+                    
+                     
+                        Log file:      
+                       
+                      {% for x in documents %}
+                        <form action="/delete/{{ x.id }}"><input type="submit" value="Delete" /> {{ x.docfile }}</form>
+                       
+                            {% endfor %}
+                    
+                    
+                   </article>
+                        
+                                         
+                      
+                    </div>
+            </div>
+
+        <!-- BG -->
+            <div id="bg"></div>
+
+         <!-- Scripts -->
+        <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+    </body>
+</html>
+
+

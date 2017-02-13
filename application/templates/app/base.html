@@ -1,0 +1,89 @@
+<html>
+   <body>
+    <head>
+        <title>nginx parser</title>
+
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+
+    </head>
+<div>
+    <h1>nginx parser</h1>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#hide").click(function(){
+        $("table").hide();
+    });
+    $("#show").click(function(){
+        $("table").show();
+    });
+});
+</script>
+
+<button id="hide">Hide</button>
+<button id="show">Show</button>
+
+<style>
+table.prva {
+position:absolute;
+}
+
+table.druga {
+position:absolute;
+left: 503px;
+}
+
+table.treca {
+position:absolute;
+left: 665px;
+
+}
+table.cetvrta {
+position:absolute;
+left: 830px;
+}
+
+
+table {
+    width:20%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+
+}
+th, td {
+    padding: 2px;
+    text-align: center;
+    font-size:8pt;
+}
+table#t01 tr:nth-child(even) {
+    background-color:#ffd699;
+}
+table#t01 tr:nth-child(odd) {
+   background-color:#ffebcc;
+}
+table#t01 th {
+    background-color: #331f00;
+    color: white;
+}
+</style>
+<div class="page-header">
+        <h1><a href="/">Nginx graphs</a></h1>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+<html>

@@ -1,0 +1,378 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>N & A</title>
+        <meta charset="utf-8" />
+
+       <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css">    
+        <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>   
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+        <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+        <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+    </head>
+    <body>
+        <!-- Wrapper -->
+    <div id="wrapper">
+ 
+            <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+      <form action="/index"><input type="submit" value="Home" /></form>
+    <h2 class="major">Specific status code per hour</h2>
+
+<style>
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #ffffff;
+    shape-rendering: crispEdges;
+
+}
+.axis text {
+  
+    font-size: 11px;
+   
+    stroke: #ffffff;
+}
+.dot {
+    stroke: #ffffff;
+}
+.legend {
+    padding: 5px;
+    font: 10px sans-serif;
+    background: yellow;
+    box-shadow: 2px 2px 1px #ffffff;
+}
+div.btn-group{
+    padding: 70px 0px 0px 600px;
+}   
+ul.dropdown-menu{
+    margin-left: 600px;
+}
+</style> 
+<h5>This chart shows Specific status code per hour and relationship between the individual status codes.</h5>       
+<div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Code per hour <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a class="m" value="code200" href="#">code 200</a></li>
+            <li><a class="m" value="code404" href="#">code 404</a></li>
+            <li><a class="m" value="code206" href="#">code 206</a></li>
+            <li><a class="m" value="code301" href="#">code 301</a></li>
+            <li><a class="m" value="code302" href="#">code 302</a></li>
+            <li><a class="m" value="code403" href="#">code 403</a></li>
+            <li><a class="m" value="code405" href="#">code 405</a></li>
+            <li><a class="m" value="code406" href="#">code 406</a></li>
+            <li><a class="m" value="code500" href="#">code 500</a></li>
+            <li><a class="m" value="code504" href="#">code 504</a></li>
+            
+        </ul>           
+    </div>
+ 
+</div>
+
+<script type="text/javascript">
+    var w = 930;
+    var h = 650;
+    var padding = {top: 80, right: 80, bottom: 80, left:80};
+    var dataset;
+    var stack = d3.layout.stack();
+   
+        
+    d3.json("http://88.198.72.70:8080/code/?format=json", function(error, json) {
+    dataset = json;
+    stack(dataset);
+
+            var color_hash = {
+                    0 : ["Code 200","#2ca02c"],
+                    1 : ["Code 206","#1f77b4"],                   
+                    2 : ["Code 404","#ff7f0e"]
+
+            };
+    var xScale = d3.time.scale()
+        .domain([new Date(dataset[0][0].time),new Date(dataset[0][dataset[0].length-1].time)])
+        .rangeRound([0, w-padding.left-padding.right]);        
+        var yScale = d3.scale.linear()
+            .domain([0,             
+                d3.max(dataset, function(d) {
+                    return d3.max(d, function(d) {
+                        return d.y0 + d.y;
+                    });
+                })
+            ])
+        .range([h-padding.bottom-padding.top,0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom")
+  
+            .tickFormat(d3.time.format("%m-%d %H"));
+
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient("left")
+         
+
+        var colors = d3.scale.category10();
+        //Create SVG element
+        var svg = d3.select("article")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+        // Add a group for each row of data
+
+        var groups = svg.selectAll("g")
+            .data(dataset)
+            .enter()
+            .append("g")
+            .attr("class","rgroups")
+            .attr("transform","translate("+ padding.left + "," + (h - padding.bottom) +")")
+            .style("fill", function(d, i) {
+                return color_hash[dataset.indexOf(d)][1];
+                
+            });
+
+        // Add a rect for each data value
+        var rects = groups.selectAll("rect")
+            .data(function(d) { return d; })
+            .enter()
+            .append("rect")
+            .attr("width", 2)
+            .style("fill-opacity",1e-6);
+
+        rects.transition()
+         .duration(function(d,i){
+             return 500 * i;
+         })
+        .ease("linear")
+        .attr("x", function(d) {
+            return xScale(new Date(d.time));
+        })
+        .attr("y", function(d) {
+            return -(- yScale(d.y0) - yScale(d.y) + (h - padding.top - padding.bottom)*2);
+        })
+        .attr("height", function(d) {
+            return -yScale(d.y) + (h - padding.top - padding.bottom);
+        })
+        .attr("width", 5)
+        .style("fill-opacity",1);
+
+        svg.append("g")
+            .attr("class","x axis")
+            .attr("transform","translate(80," + (h - padding.bottom) + ")")
+            .call(xAxis);
+
+
+        svg.append("g")
+            .attr("class","y axis")
+            .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+            .call(yAxis);
+
+// adding legend
+
+    var legend = svg.append("g")
+                    .attr("class","legend")
+                    .attr("x", w - padding.right - 65)
+                    .attr("y", 25)
+                    .attr("height", 100)
+                    .attr("width",100);
+
+    legend.selectAll("g").data(dataset)
+          .enter()
+          .append('g')
+          .each(function(d,i){
+            var g = d3.select(this);
+            g.append("rect")
+                .attr("x", w - padding.right - 65)
+                .attr("y", i*25 + 10)
+                .attr("width", 10)
+                .attr("height",10)
+                .style("fill",color_hash[String(i)][1]);
+
+            g.append("text")
+             .attr("x", w - padding.right - 50)
+             .attr("y", i*25 + 20)
+             .attr("height",30)
+             .attr("width",100)
+             .style("fill",color_hash[String(i)][1])
+             .text(color_hash[String(i)][0]);
+          });
+
+    svg.append("text")
+        .attr("transform","rotate(-90)")
+        .attr("y", 10)
+        .attr("x", 0-(h/2))
+        .attr("dy","1em")
+        .text("Number of Code");
+
+    svg.append("text")
+        .attr("class","xtext")
+        .attr("x",w/2 - padding.left)
+        .attr("y",h - 50)
+        .attr("text-anchor","middle")
+        .text("day Hour");
+
+    svg.append("text")
+        .attr("class","title")
+        .attr("x", (w / 2))             
+        .attr("y", 20)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        .text("Number of codes per hour.");
+
+    //On click, update with new data            
+    d3.selectAll(".m")
+        .on("click", function() {
+            var date = this.getAttribute("value");
+            var str;
+            if(date == "code206"){
+                str = "http://88.198.72.70:8080/code206/?format=json";
+            }else if(date == "code200"){
+                str = "http://88.198.72.70:8080/code200/?format=json";
+            }else if(date == "code404"){
+                str = "http://88.198.72.70:8080/code404/?format=json";      
+                   
+            }else if(date == "code301"){
+                str = "http://88.198.72.70:8080/code301/?format=json";
+            }else if(date == "code302"){
+                str = "http://88.198.72.70:8080/code302/?format=json";
+            }else if(date == "code403"){
+                str = "http://88.198.72.70:8080/code403/?format=json";                                   
+            }else if(date == "code405"){
+                str = "http://88.198.72.70:8080/code405/?format=json";
+            }else if(date == "code406"){
+                str = "http://88.198.72.70:8080/code406/?format=json";
+            }else if(date == "code500"){
+                str = "http://88.198.72.70:8080/code500/?format=json";
+            }else if(date == "code504"){
+                str = "http://88.198.72.70:8080/code504/?format=json";                    
+            }else{
+                str = "http://88.198.72.70:8080/code/?format=json";
+            }
+
+    d3.json(str,function(json){
+
+        dataset = [json];
+        stack(dataset);
+
+    console.log(dataset);
+
+    xScale.domain([new Date(dataset[0][0].time),new Date(dataset[0][dataset[0].length-1].time)])
+    .rangeRound([0, w-padding.left-padding.right]);
+
+    yScale.domain([0,               
+                    d3.max(dataset, function(d) {
+                        return d3.max(d, function(d) {
+                            return d.y0 + d.y;
+                        });
+                    })
+                ])
+                .range([h-padding.bottom-padding.top,0]);
+
+    xAxis.scale(xScale)
+      
+         .tickFormat(d3.time.format("%m-%d %H"));
+
+    yAxis.scale(yScale)
+         .orient("left")
+  
+
+
+    //###################################
+
+    groups = svg.selectAll(".rgroups")
+                .data(dataset);
+
+                groups.enter().append("g")
+                .attr("class","rgroups")
+                .attr("transform","translate("+ padding.left + "," + (h - padding.bottom) +")")
+                .style("fill",function(d,i){
+
+                    return color(i);
+                });
+
+
+                rect = groups.selectAll("rect")
+                .data(function(d){return d;});
+
+                rect.enter()
+                  .append("rect")
+                  .attr("x",w)
+                  .attr("width",1)
+                  .style("fill-opacity",1e-6);
+
+            rect.transition()
+                .duration(1000)
+                .ease("linear")
+                .attr("x",function(d){
+                    return xScale(new Date(d.time));
+                })
+                .attr("y",function(d){
+                    return -(- yScale(d.y0) - yScale(d.y) + (h - padding.top - padding.bottom)*2);
+                })
+                .attr("height",function(d){
+                    return -yScale(d.y) + (h - padding.top - padding.bottom);
+                })
+                .attr("width", 5)
+                .style("fill-opacity",1);
+
+            rect.exit()
+         .transition()
+         .duration(1000)
+         .ease("circle")
+         .attr("x",w)
+         .remove();
+
+            groups.exit()
+         .transition()
+         .duration(1000)
+         .ease("circle")
+         .attr("x",w)
+         .remove();
+
+
+    svg.select(".x.axis")
+       .transition()
+       .duration(1000)
+       .ease("circle")
+       .call(xAxis);
+
+    svg.select(".y.axis")
+       .transition()
+       .duration(1000)
+       .ease("circle")
+       .call(yAxis);
+
+    svg.select(".xtext")
+       .text("Hours");
+
+    svg.select(".title")
+        .text("Number of messages per hour on " + date + ".");
+    }); 
+    });             
+
+        
+});  
+</script>
+</article>
+
+            </div>
+            </div>
+
+        <!-- BG -->
+            <div id="bg"></div>
+
+
+
+    </body>
+</html>

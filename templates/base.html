@@ -1,0 +1,121 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+ 
+<head>
+  <title>N & A</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+ 
+    <body>
+
+        <style type="text/css">
+
+ 
+            .container {display:table;}
+.one {float:left;
+ max-width: 30%; 
+height: auto;
+}
+.two {float:right;  
+    max-width: 70%;
+    height: auto;
+}
+.tri {
+ max-width: 30%;
+                height: auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+}
+
+.four {float:right;  
+    max-width: 33%;
+    height: auto;
+}
+.five {float:left;  
+    max-width: 33%;
+    height: auto;
+}
+
+.six {
+ max-width: 33%;
+height: auto;
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+            #naslovna_wrapper img {
+                max-width: 70%;
+                height: auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #outer img { 
+                float: left;
+                max-width: 70%;
+                height: auto;
+            }
+            #naslovna_home img {
+                max-width: 30%;
+                height: auto;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            h1 {
+                font-weight: bold;
+                text-align: center;
+  
+            }
+
+
+        </style>
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://88.198.72.70:8080/index/#">log parser</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a href="http://88.198.72.70:8080/index/">home</a> </li>
+                                <li> <a href="#">change password</a> </li>
+                                <li> <a href="http://88.198.72.70:8080/upload/">Log upload</a> </li>
+                                <li class="divider">  </li>
+                                <li> <a href="#"></a> </li>
+                                <li class="divider">  </li>
+                                <li> <a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% block content %}
+        {% endblock %}
+            <!-- Core Scripts - Include with every page -->
+            <script src = "{% static 'js/jquery.min.js' %}"></script>
+            <script src = "{% static 'js/bootstrap.min.js' %}"></script>
+        {% block javascript %}
+        {% endblock %}
+
+    </body>
+</html>

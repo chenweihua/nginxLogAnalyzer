@@ -1,0 +1,232 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>nginx parser</title>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css">    
+        <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>   
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+        <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+        <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+
+    </head>
+    <body>
+     <!-- Wrapper -->
+    <div id="wrapper">
+ 
+            <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+      <form action="/index"><input type="submit" value="Home" /></form>
+    <h2 class="major">Server response graph</h2>
+
+<style>
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: yellow;
+    shape-rendering: crispEdges;
+
+}
+.axis text {
+  
+    font-size: 11px;
+   
+    stroke: white;
+}
+.dot {
+    stroke: #ffffff;
+}
+
+.area {
+  fill: steelblue;
+}
+  .boxed {
+
+  border: 2px solid brown;
+  border-radius: 8px;
+  height: 70px;
+  width: 20%;
+  background-color: white;   
+  text-align: center;
+  color: black;
+  display: inline-block;
+
+  margin-left:5px;
+  margin-top:5px;
+
+}
+.parent {
+  
+    padding: 10px;
+
+
+}
+</style>
+<div class="parent">
+<div class="boxed">
+  <p>Total Requests<br />      
+  {% for x in querysett %}
+      {{ x.total }}
+                       
+  {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Valid Requests<br /> {% for x in querysett %}
+      {{ x.code200 }}
+                       
+  {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Not Found<br />{% for x in querysett %}
+      {{ x.code404 }}
+                       
+  {% endfor %} </p>
+</div>
+<div class="boxed">
+  <p> Unique Visitors<br /> {% for x in querysett %}
+      {{ x.ip }}
+                       
+  {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Unique Files<br /> {% for x in querysett %}
+      {{ x.content }}
+      {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>403 Forbidden<br />   {% for x in querysett %}
+      {{ x.status403 }}
+      {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Bad Request<br /> {% for x in querysett %}
+      {{ x.status400 }}
+      {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Log Size<br /> 
+  {% for x in querysett %}
+      {{ x.fajl }}
+      {% endfor %}
+  </p>
+</div>
+<div class="boxed">
+  <p>Bandwidth<br />
+    {% for x in querysett %}
+      {{ x.promet }}
+                       
+  {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Method Not Allowed<br /> {% for x in querysett %}
+      {{ x.metod }}
+                       
+  {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Status code<br /> {% for x in querysett %}
+      {{ x.code }}
+      {% endfor %}</p>
+</div>
+<div class="boxed">
+  <p>Proc. Time<br /> 
+  {% for x in querysett %}
+      {{ x.scripttime }}
+      {% endfor %}</p>
+</div>
+</div>
+
+<h5>This chart shows the total amount of traffic as the server response.</h5>
+
+<script>
+
+    var margin = {top: 20, right: 50, bottom: 60, left: 90};
+    width = 850 - margin.left - margin.right;
+    height = 700 - margin.top - margin.bottom;
+
+var parsevrijeme = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
+                              
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var area = d3.svg.area()
+    .x(function(d) { return x(d.vrijeme); })
+    .y0(height)
+    .y1(function(d) { return y(d.promet); });
+
+var svg = d3.select("article").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+d3.json('http://88.198.72.70:8080/application/?format=json', function(error, data) {
+  if (error) throw error;
+
+  data.forEach(function(d) {
+    d.vrijeme = parsevrijeme(d.vrijeme);
+    d.promet = +d.promet;
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.vrijeme; }));
+  y.domain([0, d3.max(data, function(d) { return d.promet; })]);
+
+  svg.append("path")
+      .datum(data)
+      .attr("class", "area")
+      .attr("d", area);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .append("text")
+      .attr("x", 6)
+      .attr("dy", "2.71em")
+      .text("Time (minute)");
+    
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Traffic (server response in MB)");
+});
+
+</script>
+
+</article>
+
+</div>
+</div>
+   <!-- BG -->
+            <div id="bg"></div>
+
+    </body>
+
+</html>

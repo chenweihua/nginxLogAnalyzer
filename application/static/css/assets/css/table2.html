@@ -1,0 +1,56 @@
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+{% load table_tags %}
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>N & A</title>
+
+        <meta charset="utf-8" />
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+                <link rel="stylesheet" href="{% static 'css/assets/css/jquery.dataTables.min.css' %}">  
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css">
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+
+        <script type="text/javascript" charset="utf8" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css"> 
+
+        <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+        <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+
+
+    </head>
+    <body>
+        <!-- Wrapper -->
+    <div id="wrapper">
+ 
+            <!-- Main -->
+      <div id="main">
+        <article id="work" class="active" style="display: block;">
+      <form action="/procesing"><input type="submit" value="Home" /></form>
+    <h4 class="major">number of requests for specific content</h4>
+
+
+
+
+    {% render_table fajlovi %}
+
+
+
+</article>
+
+        </div>
+        </div>
+
+        <!-- BG -->
+        <div id="bg"></div>
+
+
+    </body>
+</html>
