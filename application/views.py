@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division
-from application.models import overall, vrijeme_promet, ipcontent, Requests_vrijeme, Status, Najaktivniji, Contents, Document, status_per_hour206, status_per_hour200, status_per_hour404, status_per_hour301, status_per_hour302, status_per_hour403, status_per_hour405, status_per_hour406, status_per_hour500, status_per_hour504
+from application.models import overall, regex, vrijeme_promet, ipcontent, Requests_vrijeme, Status, Najaktivniji, Contents, Document, status_per_hour206, status_per_hour200, status_per_hour404, status_per_hour301, status_per_hour302, status_per_hour403, status_per_hour405, status_per_hour406, status_per_hour500, status_per_hour504
 from application.serializers import VrijemePrometSerializer, IpcontentSerializer, RequestSerializer, StatusSerializer, NajaktivnijiSerializer, ContentSerializer, CodeSerializer200, CodeSerializer206, CodeSerializer404, CodeSerializer301, CodeSerializer302, CodeSerializer403, CodeSerializer405, CodeSerializer406, CodeSerializer500, CodeSerializer504
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
 #from django.views.generic import ListView
 #from braces.views import LoginRequiredMixin, GroupRequiredMixin
-from .tables import searchtable
+from .tables import searchtable, SimpleTable, searchtable2, searchtable3
 from .tables import secundsearch
 from .tables import trecisearch
 from .tables import cetvrtisearch
@@ -29,11 +29,15 @@ from wsgiref.util import FileWrapper
 import mimetypes
 from django.contrib.auth.decorators import login_required
 import glob
+import re
 #from django.shortcuts import get_object_or_404, redirect
 #from django.template.response import TemplateResponse
 #from django.core.paginator import Paginator
 from django.db.models import Sum
 #from decimal import Decimal, ROUND_HALF_UP
+import commands
+import socket
+
 
 
 try:
@@ -257,32 +261,50 @@ class ListaTemplate(TemplateView):
 
 def dataTabs(request):
     queryset = Najaktivniji.objects.all()
-    postdata = searchtable(queryset)
-    return render(request, "app/table.html", {'postdata': postdata})
+    rows = Najaktivniji.objects.count()
+
+    print type(rows)
+    if rows > 2000:
+        postdata = SimpleTable(queryset)
+        RequestConfig(request, paginate={"per_page": 20}).configure(postdata)
+        return render(request, "app/tablePrim.html", {'postdata': postdata})
+    else:
+        postdata = searchtable(queryset)
+        return render(request, "app/table.html", {'postdata': postdata})
+
 
 def datacontent(request):
+
     queryset = Contents.objects.all()
-    fajlovi = secundsearch(queryset)
-    return render(request, "app/table2.html", {'fajlovi': fajlovi})
+    rows = Contents.objects.count()
+
+    print type(rows)
+    if rows > 2000:
+        fajlovi = searchtable2(queryset)
+        RequestConfig(request, paginate={"per_page": 20}).configure(fajlovi)
+        return render(request, "app/table2Prim.html", {'fajlovi': fajlovi})
+    else:
+        fajlovi = secundsearch(queryset)
+        return render(request, "app/table2.html", {'fajlovi': fajlovi})
+
+
+
 
 def vrijemeview(request):
+
     queryset = Requests_vrijeme.objects.all()
-    vrijemerequest = trecisearch(queryset)
-    return render(request, "app/table3.html", {'vrijemerequest': vrijemerequest})
-'''
-def contentview(request):
-    queryset = ipcontent.objects.all()
-    ipcontentrequest = cetvrtisearch(queryset)
-    return render(request, "app/table4.html", {'ipcontentrequest': ipcontentrequest})
+    rows = Requests_vrijeme.objects.count()
+
+    print type(rows)
+    if rows > 2000:
+        vrijemerequest = searchtable3(queryset)
+        RequestConfig(request, paginate={"per_page": 20}).configure(vrijemerequest)
+        return render(request, "app/table3Prim.html", {'vrijemerequest': vrijemerequest})
+    else:
+        vrijemerequest = trecisearch(queryset)
+        return render(request, "app/table3.html", {'vrijemerequest': vrijemerequest})
 
 
-    
-def contentview(request):
-  
-    ipcontentrequest = cetvrtisearch(ipcontent.objects.all())
-    RequestConfig.paginate(page=request.GET.get('page', 1), per_page=25)
-    return render(request, 'app/table4.html', {'ipcontentrequest': ipcontentrequest})
-'''
 
 def simple_list(request):
     queryset = ipcontent.objects.all()
@@ -453,6 +475,7 @@ def html_tablica(tablica):
 @login_required
 def pisem_html(request):
 
+
     if (request.POST.get('mybtn')):
         html_tablica('application_najaktivniji')
         html_tablica('application_vrijeme_promet')
@@ -465,6 +488,27 @@ def pisem_html(request):
 ''' Ovdje se aktivira parser'''
 @login_required
 def run_script(request):
+    if (request.POST.get('tablice')):
+        print 'Okinio je brisanje'
+        overall.objects.all().delete()
+        regex.objects.all().delete()
+        vrijeme_promet.objects.all().delete()
+        ipcontent.objects.all().delete()
+        Requests_vrijeme.objects.all().delete()
+        Status.objects.all().delete()
+        Najaktivniji.objects.all().delete()
+        Contents.objects.all().delete()
+        Document.objects.all().delete()
+        status_per_hour206.objects.all().delete()
+        status_per_hour200.objects.all().delete()
+        status_per_hour404.objects.all().delete()
+        status_per_hour301.objects.all().delete()
+        status_per_hour302.objects.all().delete()
+        status_per_hour403.objects.all().delete()
+        status_per_hour405.objects.all().delete()
+        status_per_hour406.objects.all().delete()
+        status_per_hour500.objects.all().delete()
+        status_per_hour504.objects.all().delete()
     if (request.POST.get('mybtn')):
         proc = subprocess.Popen(["if [[ $(ps aux | grep skripta_parserska.py | grep -vc grep)  > 0 ]]; then echo 1; else echo 0 ; fi"], stdout=subprocess.PIPE, shell=True)
         (out, err) = proc.communicate()
@@ -630,3 +674,88 @@ def static(request):
 
 def static1(request):    
    return render_to_response('app/overall.html')
+
+
+def searchregwx(request):
+    varreturn = []
+ 
+    if request.method == "POST":
+        regext = request.POST['regex1']
+        string = request.POST['regex2']
+        prog = re.compile(regext)
+        match = prog.search(string)
+        if match:
+            f = open( 'custom_regex.txt', 'w' )
+            f.write( regext )
+            f.close()
+            var = 'found', match.group()
+            varreturn.append(var)
+            t = regex(id=1, regex = regext, status ='not done')
+            t.save()
+            #p = regex(regex=regext)
+
+        else:      
+            var1 =  'did not', 'find'
+            varreturn.append(var1)
+
+    return render(request, 'app/regex.html', {'varreturn':varreturn})
+      
+def defaultempty(request):    
+   return render_to_response('app/defaultempty.html')
+
+
+def default2(request):    
+   return render_to_response('app/default2.html')
+
+
+def total_client_request_defined_by_user(request): 
+ 
+    if request.method == "POST":
+        string1 = request.POST['string1']
+        print string1
+        x = overall(id=1, userdefineminimalrequest = string1)
+        x.save()
+
+    return render(request, 'app/userclient.html')
+ 
+   
+def is_valid_ipv4_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET, address)
+    except AttributeError:  # no inet_pton here, sorry
+        try:
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return address.count('.') == 3
+    except socket.error:  # not a valid address
+        return False
+
+    return True
+
+def Whois(request):
+    
+    result = []
+    if request.method == "POST":
+        string1 = request.POST['string1']
+        print string1
+        ip = is_valid_ipv4_address(string1)
+
+        if ip == True:
+            command = 'whois '+str(string1)
+            output = commands.getstatusoutput(command)
+            for i in output:
+                print i
+                result.append(i)
+        else:
+            print 'Nisi predao IP adresu!'
+            result = 'Not valid IP'
+            
+
+        #x = overall(id=1, userdefineminimalrequest = string1)
+        #x.save()
+    return render(request, 'app/whois.html', {'result':result})
+
+
+   
+

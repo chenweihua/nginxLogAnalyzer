@@ -1,0 +1,96 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>N & A</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
+    <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+    <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+  </head>
+  <body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+          <form action="/index"><input type="submit" value="Home" /></form>
+          <form action="/procesing"><input type="submit" value="Back" /></form>
+
+          
+          <h4>Log analyzer</h4>
+          <p>Here you can write your regex, for nginx or apache log file, but you must use desired format (writen bellow), if your regex is not in desired format analyzer will not use your regex, instead analyzer will use default regex writen in source code of analyzer! This is additional option to allow user to write regex for parse apache and nginx log.
+          For this aditional option, you can write your regex and put test string (one line string from desired log, apache or nginx log file), and if your regex is corect you will get message that is match your test string, and analyzer will save this regey and use in just one time when you press start button to run your log analyzer. If your regex is not correct, you will get message did not found your test string! </p>
+
+
+          <div id="load" style="display:none;">parser is activated, please wait</div>
+          <div id="loads" style="text-align: center">
+            <h4>Log analyzer</h4>
+               <form id="searchForm" method="post">
+                {% csrf_token %}
+         
+                <fieldset>
+       
+                <p>Please write your regex:</p>
+                <input id="s" type="text" name="regex1"/>
+                <p>Please write your tests string:</p>
+                <input id="s" type="text" name="regex2"/>
+
+              </br>
+            
+            <input type="submit" value="Submit" id="submitButton" />                   
+        </fieldset>
+    </form>
+    <p>Desired format: ip, time, request, status, bandwidth, user_agent, referrer</p></br>
+    <p>Status of your test reqex:{% for x, y in varreturn %}  {{x}}  {{y}} {% endfor %}</p> 
+         
+          </div>
+        </article>
+      </div>
+    </div>
+    <!-- BG -->
+    <div id="bg"></div>
+    <!-- Scripts -->
+    <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

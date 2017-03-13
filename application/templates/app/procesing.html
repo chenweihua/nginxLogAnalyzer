@@ -41,11 +41,32 @@
           <div id="loads" style="text-align: center">
             <h4>Log analyzer</h4>
             <p>Press start button to run N & A log analyzer.</p>
+            <p>Before you click on the start button to run analyzer, please choose button type, because you must decide which parser mode you want to use, nginx or apache (it depends on the log file that you submitted)!</p>
             <form method="POST" action=""  method="post" onsubmit="return ray.ajax()">
+
             {% csrf_token %}
             {{ form }}
-            <p><input type="submit" name="mybtn" value="Start"/></p>
+            <p>If your upload log is nginx log, please press this button!</p>
+            <p><input type="submit" name="mybtn" value="Start Nginx analyzer"/></p>
+            <p>If your upload log is apcahe log, please press this button!</p>
+            <p><input type="submit" name="mybtn" value="Start apache analyzer"/></p>
+
             </form>
+            <p>If you want to write your own regex to parse desired log (apache and nginx), please click this button and try to write your regex that will be used during analyze process.</p>
+            <form action="/regex"><input type="submit" value="Write your regex!" /></form>
+            
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+            <p><input type="submit" name="tablice" value="reset analyze" /></p>
+            </form>
+
+<p>If you want to rune analyzer with minimal number of request  per specific client, please define your desired number of minimal user request that will be use during procesing:</p>
+<form action="/userclient"><input type="submit" value="Define minimal user request" /></form>
+ <form action="/whois"><input type="submit" value="Get information about specific IP" /></form>
+
+
+
 
             <p>You can download your log analyzer data.</p>
 

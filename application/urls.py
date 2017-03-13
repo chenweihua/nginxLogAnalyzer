@@ -35,6 +35,12 @@ urlpatterns = [
     url(r'^overall/$', views.static1, name="overall"),
     url(r'^index/$', views.static, name="index"),
     url(r'^$', views.home, name='home'),
+    url(r'^regex/$', views.searchregwx, name='regex'),
+    url(r'^default/$', views.defaultempty, name="default"),
+    url(r'^default2/$', views.default2, name="default2"),
+    url(r'^userclient/$', views.total_client_request_defined_by_user, name="userclient"),
+    url(r'^whois/$', views.Whois, name="whois"),
+
 
 ]
 

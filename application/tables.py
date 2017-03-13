@@ -20,7 +20,6 @@ class searchtable(Table):
         model = Najaktivniji
         attrs = {'class': 'custom_class'}
 
-
 class secundsearch(Table):    
     content = Column(field='content', header='content')
     brojponavljanja = Column(field='brojponavljanja', header='brojponavljanja') 
@@ -51,5 +50,17 @@ class cetvrtisearch(Table):
 class cetvrtisearch(tables.Table):
     class Meta:
         model = ipcontent
+        exclude = ('id', )
+        attrs = {'class': 'paleblue'}
+
+class searchtable2(tables.Table):
+    class Meta:
+        model = Contents
+        exclude = ('id', )
+        attrs = {'class': 'paleblue'}
+
+class searchtable3(tables.Table):
+    class Meta:
+        model = Requests_vrijeme
         exclude = ('id', )
         attrs = {'class': 'paleblue'}

@@ -1,0 +1,64 @@
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>N & A</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> 
+     
+  
+        <link rel="stylesheet" href="{% static 'css/assets/css/jquery.dataTables.min.css' %}"> 
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css">
+        
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>        
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+        <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+
+
+    </head>
+    <body>
+        <!-- Wrapper -->
+    <div id="wrapper">
+ 
+            <!-- Main -->
+      <div id="main">
+        <article id="work" class="active" style="display: block;">
+      <form action="/index"><input type="submit" value="Home" /></form>
+    <h4 class="major">The total sum of client requests</h4>
+
+
+
+
+<div class="container" style="margin-top: 10px">
+
+    <br />
+    {% render_table postdata %}
+    <br />
+</div>
+
+</article>
+
+        </div>
+        </div>
+
+        <!-- BG -->
+        <div id="bg"></div>
+
+         <!-- Scripts -->
+        <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+        <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+    </body>
+</html>
+
+
+

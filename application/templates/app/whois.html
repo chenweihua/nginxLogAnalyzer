@@ -1,0 +1,113 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>N & A</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
+    <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+    <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+  </head>
+  <body>
+
+    <style>
+img { max-width: 100%;
+}
+pre {
+  width: 900px;
+     white-space: pre-wrap;      /* CSS3 */   
+     white-space: -moz-pre-wrap; /* Firefox */    
+     white-space: -pre-wrap;     /* Opera <7 */   
+     white-space: -o-pre-wrap;   /* Opera 7 */    
+     word-wrap: break-word;      /* IE */
+} 
+</style>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+        
+          <form action="/index"><input type="submit" value="Home" /></form>
+          <form action="/procesing"><input type="submit" value="Back" /></form>
+
+          
+          <h4>Log analyzer</h4>
+          <p>This is geolocation of ip addresses that are visited your server! These clients are requested for not valid content on your server! (server response 404) </p>
+           <br/>
+          <img alt src="{% static 'img/output.png' %}"  alt="worldmap">
+          <br/>
+        <p>This is geolocation of ip addresses that are visited your server! These clients are requested  valid content on your server! (server response 200)  <br/>
+        N & A is a fast and powerful access log analyzer. It will give you information about your site's visitors: activity statistics, accessed files, paths through the site, information about referring pages, search engines, browsers, operating systems, and more. The program produces easy-to-read reports that include both text information (tables) and charts. View the WebLog Expert sample report to get the general idea of the variety of information about your site's usage it can provide.</p> <br/>
+          <img alt src="{% static 'img/outputvalid.png' %}"  alt="worldmap"> <br/>
+          <p>Please enter your address to get information about that ip (whois linux command). If you want to know more about client who are visited your server please enter desired IP below, and your analyzer will display all available information about that IP. This option use >>whois<< linux command.  </p>
+
+
+          <div id="load" style="display:none;">Please wait!</div>
+          <div id="loads" style="text-align: center">
+            <h4>More information about desired IP</h4>
+               <form  style="width: 200px;" id="searchForm" method="post" >
+                {% csrf_token %}
+         
+                <fieldset>
+       
+                <input id="s" type="text" name="string1"/>
+              </br>
+
+            
+            <input type="submit" value="Submit" id="submitButton" />                   
+        </fieldset>
+    </form>
+
+         
+          </div>
+          <p><pre>{% for x in result %}  {{x}}  {% endfor %}</pre></p>
+        </article>
+      </div>
+    </div>
+    <!-- BG -->
+    <div id="bg"></div>
+    <!-- Scripts -->
+    <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,92 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>N & A</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
+    <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
+    <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
+  </head>
+  <body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+      <div id="main">
+        <article id="intro" class="active" style="display: block;">
+          <form action="/index"><input type="submit" value="Home" /></form>
+          <form action="/procesing"><input type="submit" value="Back" /></form>
+
+          
+          <h4>Log analyzer</h4>
+          <p>Sometimes users don't wont to make analyze for all client, instead they may want to analyze only specific client that generate x number of requset per specific client, so this
+            option allow users to define that specific x number. And aftar that in analyze will be included only client with that minimal x number of request per specific client! This option ignore clients with smaller number of request than x, that you defined! This option also may make faster this analyzer because not all clients are included in proces analyzes. </p>
+
+
+          <div id="load" style="display:none;">parser is activated, please wait</div>
+          <div id="loads" style="text-align: center">
+            <h4>Log analyzer</h4>
+               <form  style="width: 200px;" id="searchForm" method="post" >
+                {% csrf_token %}
+         
+                <fieldset>
+       
+                <input id="s" type="text" name="string1"/>
+              </br>
+
+            
+            <input type="submit" value="Submit" id="submitButton" />                   
+        </fieldset>
+    </form>
+
+         
+          </div>
+        </article>
+      </div>
+    </div>
+    <!-- BG -->
+    <div id="bg"></div>
+    <!-- Scripts -->
+    <link rel="stylesheet" href="{% static 'css/assets/js/jquery.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/skel.min.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/util.js' %}">
+    <link rel="stylesheet" href="{% static 'css/assets/js/main.js' %}">
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

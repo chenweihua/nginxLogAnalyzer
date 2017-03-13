@@ -143,4 +143,10 @@ class overall(models.Model):
 	status400 = models.IntegerField(null=True)
 	status403 = models.IntegerField(null=True)
 	scripttime = models.CharField(max_length=225,null=True)
+	userdefineminimalrequest = models.IntegerField(blank=True, null=True)
+
+class regex(models.Model):
+
+	regex = models.CharField(db_index= True, max_length=325,null=True)
+	status = models.CharField(db_index= True, max_length=225,default="not done", null=True)
 
