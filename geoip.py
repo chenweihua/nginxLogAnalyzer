@@ -8,11 +8,9 @@ import requests
 import sys
 import csv
 import matplotlib
-# Anti-Grain Geometry (AGG) backend so PyGeoIpMap can be used 'headless'
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
-#import Basemap
 import pygeoip
 
 
@@ -65,11 +63,7 @@ def get_lat_lon_from_csv(csv_file, lats=[], lons=[]):
     Retrieves the last two rows of a CSV formatted file to use as latitude
     and longitude.
     Returns two lists (latitudes and longitudes).
-    Example CSV file:
-    119.80.39.54, Beijing, China, 39.9289, 116.3883
-    101.44.1.135, Shanghai, China, 31.0456, 121.3997
-    219.144.17.74, Xian, China, 34.2583, 108.9286
-    64.27.26.7, Los Angeles, United States, 34.053, -118.2642
+
     """
     with contextlib.closing(csv_file):
         reader = csv.reader(csv_file)
@@ -96,7 +90,10 @@ def generate_map(output, lats=[], lons=[], wesn=None):
         m = Basemap(projection='cyl', resolution='l')
     m.bluemarble()
     x, y = m(lons, lats)
-    m.scatter(x, y, s=1, color='#ff0000', marker='o', alpha=0.3)
+    if output == 'application/static/img/valid.png':
+        m.scatter(x, y, s=1, color='#00ff00', marker='o', alpha=0.3)
+    else:
+        m.scatter(x, y, s=1, color='#ff0000', marker='o', alpha=0.3)
     plt.savefig(output, dpi=300, bbox_inches='tight')
 
 
