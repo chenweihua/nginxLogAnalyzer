@@ -10,9 +10,11 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from decimal import Decimal
 
-
-
-
+'''
+	In this file, we create our tables, simply we define class with name od our tables,
+	and we define our field name, and specific characteristic for this field.
+	
+'''
 class vrijeme_promet(models.Model):
 	vrijeme = models.DateTimeField(db_index=True)
 	promet  = models.DecimalField(max_digits=30, decimal_places=8, blank=True, null=True, db_index=True)

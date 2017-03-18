@@ -16,10 +16,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 from django_tables2 import RequestConfig
-from .tables import searchtable, SimpleTable, searchtable2, searchtable3
-from .tables import secundsearch
-from .tables import trecisearch
-from .tables import cetvrtisearch
+from .tables import searchtable, SimpleTable, searchtable2, searchtable3, secundsearch, trecisearch, cetvrtisearch
 from .forms import DocumentForm
 import subprocess
 import psycopg2
@@ -40,12 +37,14 @@ import socket
 #from decimal import Decimal, ROUND_HALF_UP
 
 
-# Make data for REST API - get all data from table "vrijeme_promet_variable", and make serializeration 
-# for REST API calling VrijemePrometSerializer!
-# The REST API can be called using name of this class "SnippetList", for example:
-# if we read urls.py file, we can find this line "url(r'^application/$', views.SnippetList.as_view())",
-# that means for example "http:localhost/application" on that URL you can se your Django REST API that return 
-# json file,this REST API will use D3.js for making graph! 
+'''
+    Make data for REST API - get all data from table "vrijeme_promet_variable", and make serializeration 
+    for REST API calling VrijemePrometSerializer!
+    The REST API can be called using name of this class "SnippetList", for example:
+    if we read urls.py file, we can find this line "url(r'^application/$', views.SnippetList.as_view())",
+    that means for example "http:localhost/application" on that URL you can se your Django REST API that return 
+    json file,this REST API will use D3.js for making graph!
+'''
 BASE_DIR = os.getcwd()
 class SnippetList(APIView):
     permission_classes = (AllowAny,)
@@ -54,12 +53,13 @@ class SnippetList(APIView):
         serializer = VrijemePrometSerializer(vrijeme_promet_variable, many=True)
         return Response(serializer.data)
 
-# Make data for REST API - get all data from table "ipcontent", and make serializeration for REST API 
-# calling IpcontentSerializer! The REST API can be called using name of this class "Ipcontenlist", for example:
-# if we read urls.py file, we can find this line "url(r'^ipcontent/$', views.Ipcontenlist.as_view()),",
-# that means for example "http:localhost/ipcontent" on that URL you can se your Django REST API that return json file 
-# this REST API will use Django tables for making HTML tables!
-
+'''
+    Make data for REST API - get all data from table "ipcontent", and make serializeration for REST API 
+    calling IpcontentSerializer! The REST API can be called using name of this class "Ipcontenlist", for example:
+    if we read urls.py file, we can find this line "url(r'^ipcontent/$', views.Ipcontenlist.as_view()),",
+    that means for example "http:localhost/ipcontent" on that URL you can se your Django REST API that return json file 
+    this REST API will use Django tables for making HTML tables!
+'''
 class Ipcontenlist(APIView):
     permission_classes = (AllowAny,)
     def get(self, request, format=None):
@@ -67,13 +67,13 @@ class Ipcontenlist(APIView):
         serializer = IpcontentSerializer(ipcontentt, many=True)
         return Response(serializer.data)
 
-
-# Make data for REST API - get all data from tables "status_per_hour200, status_per_hour206, status_per_hour404", and make serializeration for REST API 
-# calling serializer200, serializer206, serializer404! The REST API can be called using name of this class "CodeList", for example:
-# if we read urls.py file, we can find this line "url(r'^code/$', views.CodeList.as_view()),",
-# that means for example "http:localhost/CodeList" on that URL you can se your Django REST API that return json file 
-# this REST API will use D3.js for making graph!
-
+'''
+    Make data for REST API - get all data from tables "status_per_hour200, status_per_hour206, status_per_hour404", and make serializeration for REST API 
+    calling serializer200, serializer206, serializer404! The REST API can be called using name of this class "CodeList", for example:
+    if we read urls.py file, we can find this line "url(r'^code/$', views.CodeList.as_view()),",
+    that means for example "http:localhost/CodeList" on that URL you can se your Django REST API that return json file 
+    this REST API will use D3.js for making graph!
+'''
 class CodeList(APIView):
     permission_classes = (AllowAny,)
 
@@ -255,12 +255,12 @@ class ListaTemplate(TemplateView):
         context = super(ListaTemplate, self).get_context_data(**kwargs)
         context['requests_list'] = Requests_vrijeme.objects.all()
         return context
-
-# This function make django tables, if you read this line 'url(r'^table/$', views.dataTabs, name="table"),'
-# from urls.py, you can see that table can be called  for example on this URL http:localhost/table
-# in this function we use pagination if we have large data in tables, if not we make django search table instead 
-# this pagination django tables, this is useful because we don't want to break our application with large so we use pagination!
-
+'''
+    This function make django tables, if you read this line 'url(r'^table/$', views.dataTabs, name="table"),'
+    from urls.py, you can see that table can be called  for example on this URL http:localhost/table
+    in this function we use pagination if we have large data in tables, if not we make django search table instead 
+    this pagination django tables, this is useful because we don't want to break our application with large so we use pagination!
+'''
 def dataTabs(request):
     queryset = Najaktivniji.objects.all()
     rows = Najaktivniji.objects.count()
@@ -333,9 +333,10 @@ def procesing_html(request):
         print documents
     return render(request, 'app/upload.html', {'documents': documents, 'form': form})
 
-# This function allow user to delete uploaded log file, before run analyzer this is useful when user upload wrong file
-# and want to upload another file before run log analyzer!
-
+'''
+    This function allow user to delete uploaded log file, before run analyzer, this is useful when user upload wrong file
+    and want to upload another file before run log analyzer!
+'''
 def delete(request, stb_id=None):
     print stb_id
     if Document.objects.filter(id=stb_id).exists():
@@ -479,19 +480,6 @@ def html_tablica(tablica):
     '''
     conn.commit()
     outfile.close()
-
-@login_required
-def pisem_html(request):
-
-
-    if (request.POST.get('mybtn')):
-        html_tablica('application_najaktivniji')
-        html_tablica('application_vrijeme_promet')
-        html_tablica('application_status')
-        html_tablica('application_requests_vrijeme')
-        html_tablica('application_contents')
-
-    return render(request, 'app/tables.html')
 
 @login_required
 def run_script(request):
@@ -676,9 +664,11 @@ def static(request):
 def static1(request):    
    return render_to_response('app/overall.html')
 
-# This function catch regex from user via frontend  form, and make validation for this regex
-# if regex match desired field and desired format this regex will be stored in the databse
-# and this regex will be used in this curent iteration!
+'''
+This function catch regex from user via frontend  form, and make validation for this regex
+if regex match desired field and desired format this regex will be stored in the databse
+and this regex will be used in this curent iteration!
+'''
 
 def searchregwx(request):
     varreturn = []
@@ -720,10 +710,11 @@ def total_client_request_defined_by_user(request):
         x.save()
 
     return render(request, 'app/userclient.html')
- 
-# This function chatch data from user, and make validation if this data is IP address,
-# and after that Whois function return on frontend information about that IP address, using linux "whois" command!
 
+''' 
+    This function chatch data from user, and make validation if this data is IP address,
+    and after that Whois function return on frontend information about that IP address, using linux "whois" command!
+'''
 def is_valid_ipv4_address(address):
     try:
         socket.inet_pton(socket.AF_INET, address)
@@ -752,12 +743,9 @@ def Whois(request):
             for i in output:
                 print i
                 result.append(i)
-        else:
-            print 'Nisi predao IP adresu!'
+        else:          
             result = 'Not valid IP'           
 
-        #x = overall(id=1, userdefineminimalrequest = string1)
-        #x.save()
     return render(request, 'app/whois.html', {'result':result})
 
 

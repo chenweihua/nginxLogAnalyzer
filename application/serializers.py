@@ -2,6 +2,12 @@ from rest_framework import serializers
 from application.models import vrijeme_promet, overall, ipcontent, Requests_vrijeme, Status, Najaktivniji, Contents, status_per_hour206, status_per_hour200, status_per_hour404, status_per_hour301, status_per_hour302, status_per_hour403, status_per_hour405, status_per_hour406, status_per_hour500, status_per_hour504
 from django.utils import timezone
 
+'''
+    This option provide  data serialization for Django REST API, the procedure is: we define class
+    and in this class we define model/table and field that will be display in the django REST API!
+    After that, views can call this class from searilizer.py and make Django REST API!
+'''
+
 
 class VrijemePrometSerializer(serializers.ModelSerializer):
     class Meta:

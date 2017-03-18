@@ -5,6 +5,13 @@ from table import Table
 from table.columns import Column
 from django_tables2.utils import A
 
+'''
+    This tables.py provide search or pagination for django tables, 
+    in this class we define field that will be search field or we 
+    define pagination per specific django tables!
+
+'''
+
 class SimpleTable(tables.Table):
     class Meta:
         model = Najaktivniji
@@ -34,18 +41,6 @@ class trecisearch(Table):
     class Meta:
         model =  Requests_vrijeme
         attrs = {'class': 'moja_treca'}
-
-'''
-class cetvrtisearch(Table):    
-    ip = Column(field='ip', header='ip')
-    content = Column(field='content', header='content')
-    counts = Column(field='counts', header='counts')  
-    class Meta:
-        model = ipcontent
-        per_page = 50
-        attrs = {'class': 'moja_cetvrta'}
-
-'''
 
 class cetvrtisearch(tables.Table):
     class Meta:

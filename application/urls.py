@@ -2,6 +2,14 @@ from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from application import views
 
+'''
+    This url.py serve the html templates and all views results, the procedure is: when user click 
+    some html templates,form, or buttons django come here and try the search the specific views 
+    function or class, when django found this views function or class call them, after that this 
+    views function return something and that return Django serve in templates!
+'''
+
+
 urlpatterns = [
     url(r'^application/$', views.SnippetList.as_view()),
     url(r'^request/$', views.RequestList.as_view()),
@@ -24,8 +32,7 @@ urlpatterns = [
     url(r'^table2/$', views.datacontent, name="table2"),
     url(r'^table3/$', views.vrijemeview, name="table3"),
     url(r'^table4/$', views.simple_list, name="table4"),
-    url(r'^procesing/$', views.run_script, name="procesing"),
-    url(r'^tables/$', views.pisem_html, name="tables"),
+    url(r'^procesing/$', views.run_script, name="procesing"),   
     url(r'^nginxgraph1/$', views.nginx_graphOne, name="nginxgraph1"),
     url(r'^nginxgraph2/$', views.nginx_graphTwo, name="nginxgraph2"),
     url(r'^nginxgraph3/$', views.nginx_graphtreci, name="nginxgraph3"),

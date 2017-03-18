@@ -1,7 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm 
 from django import forms
 
-
+'''
+In this file we define our form, we have two form, 
+one for document upload, and second form allow user 
+to write his own regex, that will be used during analyzing process!
+'''
 
 class DocumentForm(forms.Form):
     docfile = forms.FileField(label='Select a file')

@@ -39,8 +39,10 @@ except:
     print "I am unable to connect to the database"
 
 
-# logProces function check number of upload log files, check file compression type, and unpack files depending on compression method!
-
+''' 
+    log Process function checks number of uploaded log files, check file compression type, 
+    and unpack files depending on compression type!
+'''
 def logProces(logfile, base_dir):
     print 'Function: logProces'
     try:
@@ -138,7 +140,10 @@ def logProces(logfile, base_dir):
         logging.error(traceback.format_exc())
 logProces('access.log', BASE_DIR)
 
-# This function check if table is empty, and if not delete this table (because for every new analyzing iteration we need empty tables).
+'''
+   This function check if specific table is empty if not then deletes this 
+   table, because for each new analysis we need to have a blank table!
+'''
 
 def delete_table(table):
     cursor = conn.cursor()
@@ -168,11 +173,23 @@ def check_empty_table(table):
 
     conn.commit()  
 access_log = "access.log"  
-# Parsed results are written in CSV, so for each new iteration we need a new file!
+
+''' 
+    Parsed results are written in CSV, so for each new iteration we need a new file!
+    Because we use SQL / PL function (that I written on Postgres database,which use 
+    COPY method to make copy from csv file to database, because it is faster than 
+    conventional insert line by line)!
+'''
+
 os.system("rm -rf /tmp/mycsvfile.csv")
 os.system("touch /tmp/mycsvfile.csv")
 
-# This function check if user write own regex, for parsing log file!
+''' 
+    This function check if user write his own regex, for parsing log file!
+    Because we allow user to write his own regex that will be used during 
+    parse log file, but that regex will be use only once for that current 
+    iteration because we must allow new regex for new users and new iteration. 
+'''
 print 'Parse log file'
 def reSELECTOR():
     regexSELECTOR = conn.cursor()
@@ -182,9 +199,11 @@ def reSELECTOR():
         if selector not in ('', None):
             return selector
 
-# This function parses a log file, but before doing parse function checks if user 
-# has written own regex, if user write regex function  will use it, if not a function has its own regex that will use!
-
+'''
+    This function parses a log file, but before that, function checks if user 
+    has wrote his own regex, if user wrote his own regex function  will use it, 
+    if not function has its own regex that will use!
+'''
 def process_wrapper(chunkStart, chunkSize):
     reg = reSELECTOR()    
     if reg not in ('', None):
@@ -213,7 +232,7 @@ def process_wrapper(chunkStart, chunkSize):
     finally:
         f.close()
 
-# This is multiprocessing mode, we use python multiprocessing because we want faster parse large log file.
+''' This is multiprocessing mode, we use python multiprocessing because we want faster parse large log file.'''
 
 def chunkify(fname, size=1024*1024):
     fileEnd = os.path.getsize(fname)
@@ -240,12 +259,13 @@ except Exception as e:
     logging.error(traceback.format_exc())
 
 
-
-#  Now we call postgres PL function, (PL/SQL Function which use COPY method on postgres database) 
-#  for copy parsed data from CSV to database, because this is faster than insert one by one row in database (this is useful when we have a large file). 
-#  If user has writen his own regex, and we used it, but in this part we must update "not done" field with done, because we must know
-#  in next iteration that this regex is used once, and no more, this option allow user to write new regex that will be used instead this old regex.
-
+'''
+    Now we call postgres PL/SQ function, (function use COPY method on postgres database, 
+    for  copy parsed data from CSV file to database), because this is faster than insert one by one row 
+    (this is useful when we have a large file). If user has writen his own regex, and we used it, but in this part we 
+    must update this field from 'not done' to 'done', because we must know in next iteration a regex was used once, and 
+    no more, this option allow user for new iteration to write new regex that will be used instead this old regex.
+'''
 delete_table('application_nginxlog')
 cur = conn.cursor()
 cur.execute("SELECT * FROM function_csv();")
@@ -253,9 +273,11 @@ regexHANDLER = conn.cursor()
 regexHANDLER.execute("UPDATE application_regex SET status='done', regex='' WHERE id= 1;")
 conn.commit()
 
-# This function calculate the turnover per minute, 
-# function count all client request in a specific minutes and count the traffic that the server generates per minute.
-# If we have large file, we don't want use whole RAM memory of our server, during load data into memory, so we process 100000 rows by 100000 rows!
+'''
+    This function calculate traffic per minute (MB/min), function count all client request per minutes 
+    and count the traffic that the server generates per minute.If we have large file, we don't want use
+    whole RAM memory of our server, during load data into memory, so we process <= 100000 rows in the one part!
+'''
 def traffic_per_minute():
     print 'Function: traffic_per_minute'    
     try:
@@ -327,13 +349,14 @@ def traffic_per_minute():
         logging.error(traceback.format_exc())     
 traffic_per_minute()
 
-#  This function calculate request per minute,function count all client request in a specific 
-#  minutes and count the number of request that the client are generated per minute,if we have
-#  large file, we don't want use whole RAM memory of our server, during load data into memory, 
-#  so we process 100000 rows by 100000 rows!    
+'''
+    This function calculate clients request per minute, if we have large file, we don't 
+    want use whole RAM memory of our server, during load data into memory, so we process 
+    <= 100000 rows in the one part!    
+'''
+
 def request_per_minute():
     print 'Function: request_per_minute'    
-
     try:
         delete_table('application_requests_vrijeme')
         cursor7 = conn.cursor('cursor7')
@@ -392,10 +415,11 @@ def request_per_minute():
         logging.error(traceback.format_exc())   
 request_per_minute()
 
-
-# This function calculate number of request per specific client, in this function there is option which check if user
-# are defined number of request per specific client, if not, function calculate number of request for all clients (this is not
-# good option if we have large access.log file 1GB, because performing time may take longer)! 
+'''
+    This function calculate number of request per specific client, in this function there is option which check if user
+    are defined number of request per specific client, if not, function calculate number of request for all clients (this is not
+    good option if we have large access.log file 1GB, because performing duration may take longer)! 
+'''
 def most_active_IP():
     print 'Function: most_active_IP'    
     try:
@@ -428,7 +452,7 @@ def most_active_IP():
         logging.error(traceback.format_exc())
 most_active_IP()
 
-# This function calculate content frequency request (number of request per specific content)!
+''' This function calculate content frequency request (number of request per specific content)! '''
 def get_content():
     print 'Function: get_content'
     try:
@@ -462,7 +486,7 @@ def get_content():
         logging.error(traceback.format_exc())
 get_content()
 
-# This function calculate content frequency request per specific client (number of request per specific client)!
+''' This function calculate content frequency request per specific client (number of content request per specific client)! '''
 def ip_content():
     print 'Function: ip_content'
 
@@ -495,10 +519,9 @@ def ip_content():
 
 ip_content()
 
-# This function shows number of specific status code (status code: 200, 404, 500, 206...etc) 
+''' This function shows number of specific status code (status code: 200, 404, 500, 206...etc) ''' 
 def access_by_Response_code():
     print 'Function: access_by_Response_code'
-
 
     delete_table('application_status')
     cursor_response = conn.cursor('cursor_response')
@@ -515,7 +538,7 @@ def access_by_Response_code():
 
 access_by_Response_code()
 
-# This function calculate specific status code per hour!
+''' This function calculate specific status code per hour! '''
 def status_per_hour(code):
     print 'Function: status_per_hour'
 
@@ -678,7 +701,10 @@ def fixTable():
 
 fixTable()
 
-# This function calculate overal informations of analyzing log file!
+''' This function calculate overal informations of analyzing log file:
+    Total request, valid request, Not found request, unique visitors, unique files, 
+    Forbidden request, bad request, log Size, bandwidth, mwthod not allowed, status code and proc. time    
+'''
 def nginx_graphOne():
     print 'Function: nginx_graphOne'
     try:
@@ -827,7 +853,7 @@ def nginx_graphOne():
 
 nginx_graphOne()
 
-# This function delete access log, because for new iteration of analyzes we use new log file that users upload!
+''' This function delete access log, because for new iteration we use new log file that users upload!'''
 def delete_access_log(file):
     try:          
         name =file+str('access.log')
@@ -841,7 +867,13 @@ def delete_access_log(file):
 
 delete_access_log(BASE_DIR)
 
-''' make file with range of IP for geoblocing'''
+''' We also provide an option with geolocation of specifc IP address
+    (if IP is public), but first we must catch IP adress from user log file
+    and write this IP address into file, so this function make file with range of 
+    IP for geoblocing, and after that function call another script which made geolocation
+    on the world map, and this function generate two png images,  one for 'valid' user request,
+    and one for 'not valid' user request.
+'''
 
 def range_ip_for_geolocation(files):
     ip_api_url = 'http://applicationfree.net:8080/najaktivniji/?format=json'

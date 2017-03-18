@@ -5,22 +5,80 @@
     <head>
         <title>N & A</title>
         <meta charset="utf-8" />
+         <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />       
         <link rel="stylesheet" href="{% static 'css/assets/css/mainn.css' %}">       
         <noscript><link rel="stylesheet" href="{% static 'css/assets/css/noscript.css' %}"></noscript>
 
     </head>
     <body>
-        <!-- Wrapper -->
+<style>
+  
+
+canvas {
+  width:30%;
+  height:30%;
+}
+
+</style>        <!-- Wrapper -->
         <div id="wrapper">
- 
+
             <!-- Main -->
             <div id="main">
                 <article id="intro" class="active" style="display: block;">
                     <form action="/index"><input type="submit" value="Home" /></form>
                     <h2 class="major">Upload</h2>
+                    
                     <p>Upload your access.log (.zip, .gz, .tar.gz ), it is possible to upload more than one log, and your log will be extract automatically.</br>    
-                    For quickly parsing yours logs, application uses multithreading mode.
+                    For quickly parsing yours logs, application uses multiprocessing mode.</p>
+                    <aside id='menuPuzzleType'>
+<script>
+container = document.getElementById( 'menuPuzzleType' );
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+container.appendChild( renderer.domElement  );
+var spotLight = new THREE.SpotLight(0xffffff);
+spotLight.position.set(100,100,100);
+spotLight.castShadow = true; 
+spotLight.shadowMapWidth = 1024;
+spotLight.shadowMapHeight = 1024;
+spotLight.shadowCameraNear = 500;
+spotLight.shadowCameraFar = 4000;
+spotLight.shadowCameraFov = 30;
+scene.add(spotLight);
+
+function Mat(){
+  var material = new THREE.MeshPhongMaterial({
+    color      : new THREE.Color("rgb(35,35,213)"),  
+    emissive   : new THREE.Color("rgb(64,128,255)"), 
+    specular   : new THREE.Color("rgb(93,195,255)"), 
+    shininess  : 1,                                 
+    shading    : THREE.FlatShading,                 
+    wireframe  : 1,                                 
+    transparent: 1,
+    opacity    : 0.80                               
+  });
+  return material;
+}
+
+var geometry = new THREE.SphereGeometry(50,30,30,0,Math.PI*2,0,Math.PI);
+var earth = new THREE.Mesh(geometry, Mat());
+scene.add(earth);
+camera.position.z = 90;
+function render(){
+  requestAnimationFrame(render);
+  earth.rotation.x += 0.01;
+  earth.rotation.y += 0.01;
+  renderer.render(scene, camera);
+}
+render();
+
+
+</script>
+</aside>
+                    <p>
                     N & A analysis software  is a kind of web analytics software that parses a server log file from a web server, and based on the values contained in the log file, derives indicators about when, how, and by whom a web server is visited. Reports are  generated immediately, but data extracted from the log files is stored in a postgres database, allowing various reports to be generated on demand.</p> 
 
                     <form action="{% url "upload" %}" method="post" enctype="multipart/form-data"  >
@@ -35,19 +93,15 @@
                     </form>
                     <h3>Your uploads logs:</h3>
                     
-                     
                         Log file:      
                        
                       {% for x in documents %}
                         <form action="/delete/{{ x.id }}"><input type="submit" value="Delete" /> {{ x.docfile }}</form>
                        
-                            {% endfor %}
-                    
-                    
-                   </article>
-                        
-                                         
-                      
+                            {% endfor %}                    
+          
+                   </article>                                  
+
                     </div>
             </div>
 

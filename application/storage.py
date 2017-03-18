@@ -2,6 +2,11 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
 
+
+'''
+    This class provide option for upload user log file!
+'''
+
 class OverwriteStorage(FileSystemStorage):
 
     def get_available_name(self, name,  max_length=None):

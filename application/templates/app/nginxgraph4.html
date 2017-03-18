@@ -1,5 +1,6 @@
 {% load staticfiles %}
 
+<!-- THIS IS PIECHART AND SHOWS TOTAL COUNT OF SPECIFIC STATUS CODE  -->
 
 <!DOCTYPE html>
 <html>
@@ -19,15 +20,21 @@
 <script src="https://www.amcharts.com/lib/3/themes/black.js"></script>
   </head>
   <body>
+
     <!-- Wrapper -->
     <div id="wrapper">
       <!-- Main -->
       <div id="main">
         <article id="intro" class="active" style="display: block;">
           <form action="/index"><input type="submit" value="Home" /></form>
-          <h2 class="major">Upload</h2>
+          <h4 class="major">Upload</h4>
+          <p>
+            Every request has represented by access code, this pie chart shows total count of specific access code!
+Web analytics is the measurement of the behavior of visitors to a website. In a commercial context, it especially refers to the measurement of which aspects of the website work towards the business objectives of Internet marketing initiatives; for example, which landing pages encourage people to make a purchase.
+         </p>
           <!-- Chart code -->
           <script>
+
             var chart = AmCharts.makeChart( "chartdiv", {
               "type": "pie",            
               "theme": "black",
