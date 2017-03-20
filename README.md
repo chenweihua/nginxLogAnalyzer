@@ -12,6 +12,10 @@ Web analytics provides information about the number of visitors to a website and
 
 Web servers record some of their transactions in a log file. It was soon realized that these log files could be read by a program to provide data on the popularity of the website. Thus arose web log analysis software.
 
+* Visit N & A analyzer on demo version:
+http://applicationfree.net:8080/login/
+username: ganicas
+password: Fckgw789
 
 This nginx log analyzer is writen in Python:
 * Python,
