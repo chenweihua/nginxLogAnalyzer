@@ -278,6 +278,7 @@ conn.commit()
     and count the traffic that the server generates per minute.If we have large file, we don't want use
     whole RAM memory of our server, during load data into memory, so we process <= 100000 rows in the one part!
 '''
+
 def traffic_per_minute():
     print 'Function: traffic_per_minute'    
     try:
@@ -285,37 +286,36 @@ def traffic_per_minute():
         cursor2 = conn.cursor('cursor2')
         cursor2.itersize = 100000
         cursor2.execute("SELECT bandwidth, vrijeme FROM application_nginxlog")
-        cptLigne = 0
         vrijeme_promet = {}
         dict_list = []
         cursor3 = conn.cursor()
-        for rec in cursor2:
-            cptLigne += 1
-            time = rec[1].strftime('%Y-%b-%d %H:%M')
-            promet = rec[0]
-            dicts = {'vrijeme': time, 'promet': promet}
-            dict_list.append(dicts)
-            if cptLigne <= 100000:               
-                for item in dict_list:
-                    vrijeme_promet[item['vrijeme']] = 0                    
-                for item in dict_list:
-                    vrijeme_promet[item['vrijeme']] += item['promet']            
-                for key, values in sorted(vrijeme_promet.items()):
-                    cptLigne += 1
-                    vrijeme = key
-                    promet = values           
-                    query = "INSERT INTO application_vrijeme_promet(vrijeme, promet) VALUES (%s, %s);"
-                    data = (vrijeme, promet)
-                    cursor3.execute(query, data)                
-                vrijeme_promet = None
-                dict_list = None
-                vrijeme_promet = {}
-                dict_list = []    
+        while True:
+            rows = cursor2.fetchmany(100000)        
+            if not rows:
+                break
+            for rec in rows:
+                time = rec[1].strftime('%Y-%b-%d %H:%M')
+                promet = rec[0]
+                dicts = {'vrijeme': time, 'promet': promet}
+                dict_list.append(dicts)                
+            for item in dict_list:
+                vrijeme_promet[item['vrijeme']] = 0                    
+            for item in dict_list:
+                vrijeme_promet[item['vrijeme']] += item['promet']            
+            for key, values in sorted(vrijeme_promet.items()):
+                vrijeme = key
+                promet = values           
+                query = "INSERT INTO application_vrijeme_promet(vrijeme, promet) VALUES (%s, %s);"
+                data = (vrijeme, promet)
+                cursor3.execute(query, data)                
+            vrijeme_promet = None
+            dict_list = None
+            vrijeme_promet = {}
+            dict_list = []    
         cursor2.close()
         cursor3.close()
         conn.commit()
         # We must check if we have duplicated minute in same hour!
-
         cursor4 = conn.cursor('cursor4')
         snipet_promet = {}
         snipet_lista = []
@@ -362,29 +362,31 @@ def request_per_minute():
         cursor7 = conn.cursor('cursor7')
         cursor7.itersize = 100000
         cursor7.execute("SELECT vrijeme FROM application_nginxlog")
-        cptLigne = 0
         lista_dictionaries = []
         request = {}
         cursor8 = conn.cursor()
-        for rec in cursor7:
-            cptLigne += 1
-            time = rec[0].strftime('%Y-%b-%d %H:%M')
-            dictionary = {'vrijeme': time}
-            lista_dictionaries.append(dictionary)
-            if cptLigne <= 100000:            
-                for dic in lista_dictionaries:
-                    values = dic['vrijeme']
-                    request[values] = request.get(values, 0)+1
-                for key, values in sorted(request.items()):
-                    vrijeme = key
-                    requests = values                    
-                    query = "INSERT INTO application_requests_vrijeme(vrijeme, requests) VALUES (%s, %s);"
-                    data = (vrijeme, requests)
-                    cursor8.execute(query, data)
-                request = None
-                lista_dictionaries = None
-                lista_dictionaries = []
-                request = {}
+        while True:
+            rows = cursor7.fetchmany(100000)        
+            if not rows:
+                break
+            for rec in rows: 
+                time = rec[0].strftime('%Y-%b-%d %H:%M')
+                dictionary = {'vrijeme': time}
+                lista_dictionaries.append(dictionary)
+            for dic in lista_dictionaries:
+                values = dic['vrijeme']
+                request[values] = request.get(values, 0)+1
+            for key, values in sorted(request.items()):
+                vrijeme = key
+                requests = values              
+                print vrijeme, values                  
+                query = "INSERT INTO application_requests_vrijeme(vrijeme, requests) VALUES (%s, %s);"
+                data = (vrijeme, requests)
+                cursor8.execute(query, data)
+            request = None
+            lista_dictionaries = None
+            lista_dictionaries = []
+            request = {}
         cursor7.close()
         cursor8.close()
         conn.commit()
@@ -430,12 +432,18 @@ def most_active_IP():
         cursor_userInput.execute("SELECT userdefineminimalrequest FROM application_overall")
 
         uservalue = check_empty_table('application_overall')
-        if uservalue not in ('', None, False):
+        user_input = []
+        if uservalue not in ('', None, True):
+            for item in cursor_userInput:
+                for userMinimalvalue in item:
+                    if userMinimalvalue != None:
+                        print userMinimalvalue                     
             cursor_stat1 = conn.cursor()
             for item in cursor_ip:
                 ip = item[0]
                 brojponavljanja = item[1]
-                if brojponavljanja >= cursor_userInput:                
+   
+                if brojponavljanja >= userMinimalvalue:                
                     query = "INSERT INTO application_najaktivniji(ip, brojponavljanja) VALUES (%s, %s);"
                     data = (ip, brojponavljanja)
                     cursor_stat1.execute(query, data)
@@ -463,12 +471,18 @@ def get_content():
         cursor_userInput.execute("SELECT userdefineminimalrequest FROM application_overall")
 
         uservalue = check_empty_table('application_overall')
-        if uservalue not in ('', None, False):
+       
+        if uservalue not in ('', None, True):
+            for item in cursor_userInput:
+                for userMinimalvalue in item:
+                    if userMinimalvalue != None:
+                        print userMinimalvalue
+                           
             cursor_stat1 = conn.cursor()
             for item in cursor_ip:
                 content = item[0]
                 brojponavljanja = item[1]
-                if brojponavljanja >= cursor_userInput:              
+                if brojponavljanja >= userMinimalvalue:              
                     query = "INSERT INTO application_contents(content, brojponavljanja) VALUES (%s, %s);"
                     data = (content, brojponavljanja)
                     cursor_stat1.execute(query, data)
