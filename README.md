@@ -17,7 +17,7 @@ http://applicationfree.net:8080/login/
 username: ganicas
 password: Fckgw789
 
-This nginx log analyzer is writen in Python:
+## This nginx log analyzer is writen in Python:
 * Python,
 * Django,
 * PostgreSQL,
@@ -25,7 +25,7 @@ This nginx log analyzer is writen in Python:
 * JavaScript, D3.js,
 * HTML, CSS,
 * Python multiprocesing (this is useful for large file)
-Some features of N & A log analyzer:
+## Some features of N & A log analyzer:
 
 * GEOLOCATION FOR PUBLIC IP ADDRESS
 * SERVER RESPONSE GRAPH
@@ -37,7 +37,7 @@ Some features of N & A log analyzer:
 * TABLE WITH NUMBER OF REQUEST PER MINUTE
 * TABLE WITH NUMBER OF CLIENT REQUEST PER SPECIFIC CONTENT
 * DOWNLOAD SEARCH TABLES
-# Some graph of N & A analyzer
+## Some graph of N & A analyzer
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
