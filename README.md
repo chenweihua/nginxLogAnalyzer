@@ -16,10 +16,7 @@ Web servers record some of their transactions in a log file. It was soon realize
 http://applicationfree.net:8080/login/
 username: ganicas
 password: Fckgw789
-# Some graph of N & A analyzer
-![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
-![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
-![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
+
 This nginx log analyzer is writen in Python:
 * Python,
 * Django,
@@ -40,3 +37,7 @@ Some features of N & A log analyzer:
 * TABLE WITH NUMBER OF REQUEST PER MINUTE
 * TABLE WITH NUMBER OF CLIENT REQUEST PER SPECIFIC CONTENT
 * DOWNLOAD SEARCH TABLES
+# Some graph of N & A analyzer
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
