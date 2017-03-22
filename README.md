@@ -25,7 +25,6 @@ This nginx log analyzer is writen in Python:
 * JavaScript, D3.js,
 * HTML, CSS,
 * Python multiprocesing (this is useful for large file)
-https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png
 Some features of N & A log analyzer:
 
 * GEOLOCATION FOR PUBLIC IP ADDRESS
