@@ -435,7 +435,7 @@ def most_active_IP():
             for item in cursor_ip:
                 ip = item[0]
                 brojponavljanja = item[1]
-                if brojponavljanja >= uservalue:                
+                if brojponavljanja >= cursor_userInput:                
                     query = "INSERT INTO application_najaktivniji(ip, brojponavljanja) VALUES (%s, %s);"
                     data = (ip, brojponavljanja)
                     cursor_stat1.execute(query, data)
@@ -468,7 +468,7 @@ def get_content():
             for item in cursor_ip:
                 content = item[0]
                 brojponavljanja = item[1]
-                if brojponavljanja >= uservalue:              
+                if brojponavljanja >= cursor_userInput:              
                     query = "INSERT INTO application_contents(content, brojponavljanja) VALUES (%s, %s);"
                     data = (content, brojponavljanja)
                     cursor_stat1.execute(query, data)
