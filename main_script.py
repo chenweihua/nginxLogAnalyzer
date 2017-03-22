@@ -142,7 +142,7 @@ logProces('access.log', BASE_DIR)
 
 '''
    This function check if specific table is empty if not then deletes this 
-   table, because for each new analysis we need to have a blank table!
+   table, because for each new analysis we need to have empty table!
 '''
 
 def delete_table(table):
