@@ -39,8 +39,9 @@ password: Fckgw789
 * DOWNLOAD SEARCH TABLES
 ## Some graph of N & A analyzer
 * Overall information and graph, this is overall information about your access.log file.
-* ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24207296/ca07016a-0f20-11e7-9ac4-1ad9f3cf8822.png)
-* ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
-* ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24207296/ca07016a-0f20-11e7-9ac4-1ad9f3cf8822.png)
+* Status code of your access.log file.
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
 * IP address who have visited your server (with not valid request, code 404)
-* ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
+![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
