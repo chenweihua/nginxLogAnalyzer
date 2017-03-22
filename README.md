@@ -40,5 +40,5 @@ password: Fckgw789
 ## Some graph of N & A analyzer
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088935/c4f9dd88-0d30-11e7-861b-a76c11664121.png)
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088936/c66905a4-0d30-11e7-891d-8c87ddd3557c.png)
-* This is IP address who have visited your server
+* This is IP address who have visited your server (with not valid request, code 404)
 ![alt tag](https://cloud.githubusercontent.com/assets/9252629/24088874/225d9754-0d30-11e7-8707-e1fd9ac5ecf0.png)
