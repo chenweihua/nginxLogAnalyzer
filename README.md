@@ -37,6 +37,8 @@ password: Fckgw789
 * TABLE WITH NUMBER OF REQUEST PER MINUTE
 * TABLE WITH NUMBER OF CLIENT REQUEST PER SPECIFIC CONTENT
 * DOWNLOAD SEARCH TABLES
+* CHART TOP 20 TOTAL REQUEST PER CONTENT 
+* CHART TOP 20 TOTAL REQUEST PER IP 
 ## Some graph of N & A analyzer
 * Overall information and graph, this is overall information about your access.log file.
 
