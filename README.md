@@ -22,7 +22,7 @@ password: Fckgw789
 * Django,
 * PostgreSQL,
 * PL/SQL,
-* JavaScript, D3.js,
+* JavaScript, D3.js, amchart
 * HTML, CSS,
 * Python multiprocesing (this is useful for large file)
 ## Some features of N & A log analyzer:
