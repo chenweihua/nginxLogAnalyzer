@@ -505,7 +505,7 @@ def run_script(request):
         status_per_hour504.objects.all().delete()
     if (request.POST.get('mybtn')):
 
-        proc = subprocess.Popen(["if [[ $(ps aux | grep skripta_parserska.py | grep -vc grep)  > 0 ]]; then echo 1; else echo 0 ; fi"], stdout=subprocess.PIPE, shell=True)
+        proc = subprocess.Popen(["if [[ $(ps aux | grep main_script.py | grep -vc grep)  > 0 ]]; then echo 1; else echo 0 ; fi"], stdout=subprocess.PIPE, shell=True)
         (out, err) = proc.communicate()
         var = int(out)
         if var == 0:
